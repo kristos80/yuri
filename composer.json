@@ -1,0 +1,21 @@
+{
+	"name" : "kristos80/yuri",
+	"type" : "library",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Christos Athanasiadis",
+			"email" : "christos.k.athanasiadis@gmail.com"
+		}
+	],
+	"minimum-stability" : "stable",
+	"autoload" : {
+		"psr-4" : {
+			"Kristos80\\Yuri\\" : "src/Kristos80/Yuri"
+		}
+	},
+	"description" : "Uris on steroids",
+	"require": {
+		"sabre/uri": "^2.2",
+		"kristos80/opton": "^1.1"
+	}
+}
