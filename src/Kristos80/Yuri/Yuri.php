@@ -62,15 +62,11 @@ class Yuri {
 	protected $uid = '';
 
 	public function __construct(?string $uri = NULL) {
-		$this->setOriginalUri($uri);
-		$this->setParsedUri();
-		$this->setPaths();
-		$this->setQueryVars();
-		$this->setNormalizedUri();
-		$this->setUid();
+		$this->init($uri);
 	}
 
-	protected function setOriginalUri(?string $originalUri = NULL) {
+	protected function init(?string $originalUri = NULL) {
+		// ======== Original Uri section ========
 		/**
 		 *
 		 * @var string $originalUri
@@ -78,9 +74,8 @@ class Yuri {
 		$originalUri = $originalUri ?: 'http' . ((Opton::get('HTTPS', $_SERVER) !== 'on') ?: 's') . '://' . Opton::get('HTTP_HOST', $_SERVER) . Opton::get('REQUEST_URI', $_SERVER);
 
 		$this->originalUri = $originalUri;
-	}
 
-	protected function setParsedUri() {
+		// ======== Parsed Uri section ========
 		/**
 		 *
 		 * @var string $parsedUri
@@ -92,9 +87,8 @@ class Yuri {
 		$this->port = Opton::get('port', $parsedUri, $this->port);
 
 		$this->parsedUri = $parsedUri;
-	}
 
-	protected function setPaths() {
+		// ======== Paths section ========
 		/**
 		 *
 		 * @var array $paths
@@ -102,22 +96,23 @@ class Yuri {
 		$paths = explode('/', trim(Opton::get('path', $this->parsedUri) ?: '', '/'));
 
 		$this->paths = ! empty($paths) && Opton::get(0, $paths) ? $paths : array();
-	}
 
-	protected function setQueryVars() {
+		// ======== Query section ========
 		parse_str(Opton::get(1, explode('?', $this->getOriginalUri())) ?: '', $this->query);
-	}
 
-	protected function setNormalizedUri() {
+		// ======== Normalized Uri section ========
+		/**
+		 * 
+		 * @var string $normalizedUri
+		 */
 		$normalizedUri = ($scheme = $this->getScheme()) ? $scheme . '://' : '';
 		$normalizedUri .= $this->getHost();
 		$normalizedUri .= ($port = $this->getPort()) ? ':' . $port : '';
 		$normalizedUri .= $this->getPath();
 
 		$this->normalizedUri = $normalizedUri;
-	}
 
-	protected function setUid() {
+		// ======== Uid section ========
 		$this->uid = md5($this->getNormalizedUri());
 	}
 
