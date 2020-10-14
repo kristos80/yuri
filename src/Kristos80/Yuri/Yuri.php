@@ -51,6 +51,12 @@ class Yuri {
 
 	/**
 	 *
+	 * @var array
+	 */
+	protected $querySorted = array();
+
+	/**
+	 *
 	 * @var integer
 	 */
 	protected $port = 80;
@@ -102,7 +108,7 @@ class Yuri {
 
 		// ======== Normalized Uri section ========
 		/**
-		 * 
+		 *
 		 * @var string $normalizedUri
 		 */
 		$normalizedUri = ($scheme = $this->getScheme()) ? $scheme . '://' : '';
@@ -113,7 +119,9 @@ class Yuri {
 		$this->normalizedUri = $normalizedUri;
 
 		// ======== Uid section ========
-		$this->uid = md5($this->getNormalizedUri());
+		$this->querySorted = $this->query;
+		array_multisort($this->querySorted);
+		$this->uid = md5($this->normalizedUri . serialize($this->querySorted));
 	}
 
 	/**
