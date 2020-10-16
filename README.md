@@ -8,5 +8,58 @@
 
 By default `Yuri` works for the current URL if an input URI is ommited:
 ```PHP
-$yuri = new Yuri();
+<?php
+use Kristos80\Yuri\Yuri;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$yuri = new Yuri('https://www.dummy.com/path/index.html?q[]=1&q[]=2');
+```
+You can check, almost, all methods returned values, by using one of the `asArray()`, `asClass()` or `asJsonString()` methods:
+
+```PHP
+//@see Yuri::asJsonString(bool $prettyPrint = FALSE)
+echo($yuri->asJsonString(TRUE)); 
+```
+```JSON
+{
+    "originalUri": "https:\/\/www.dummy.com\/path\/index.html?q[]=1&q[]=2",
+    "normalizedUri": "https:\/\/www.dummy.com\/path\/index.html?q[0]=1&q[1]=2",
+    "normalizedUriWithSlash": "https:\/\/www.dummy.com\/path\/index.html?q[0]=1&q[1]=2",
+    "scheme": "https",
+    "host": "www.dummy.com",
+    "path": "\/path\/index.html",
+    "paths": [
+        "path",
+        "index.html"
+    ],
+    "query": {
+        "q": [
+            "1",
+            "2"
+        ]
+    },
+    "originalQueryString": "q[]=1&q[]=2",
+    "queryString": "q[0]=1&q[1]=2",
+    "port": null,
+    "uid": "6ec78702bb2686046b5102547fbd3d79",
+    "isHttps": true,
+    "isFile": true
+}
+```
+And there are some extra utility methods for getting data about `path` and `query`, like:
+```PHP
+//@see Yuri::getQueryVar(string $varNotation, $defaultValue = NULL)
+//Notation syntax is, also, supported
+echo $yuri->getQueryVar('q.0','defaultValueIfNotExists'); 
+```
+```
+1
+```
+```PHP
+//@see Yuri::getPathByIndex(int $pathIndex = 0)
+echo $yuri->getPathByIndex();
+```
+```
+path
 ```
