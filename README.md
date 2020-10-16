@@ -18,8 +18,8 @@ $yuri = new Yuri('https://www.dummy.com/path/index.html?q[]=1&q[]=2');
 You can check, almost, all methods returned values, by using one of the `asArray()`, `asClass()` or `asJsonString()` methods:
 
 ```PHP
-echo($yuri->asJsonString(TRUE)); 
 //@see Yuri::asJsonString(bool $prettyPrint = FALSE)
+echo($yuri->asJsonString(TRUE)); 
 ```
 ```JSON
 {
@@ -49,9 +49,9 @@ echo($yuri->asJsonString(TRUE));
 ```
 And there are some extra utility methods for getting data about `path` and `query`, like:
 ```PHP
-echo $yuri->getQueryVar('q.0','defaultValueIfNotExists'); 
 //@see Yuri::getQueryVar(string $varNotation, $defaultValue = NULL)
 //Notation syntax is, also, supported
+echo $yuri->getQueryVar('q.0','defaultValueIfNotExists'); 
 ```
 ```
 1
