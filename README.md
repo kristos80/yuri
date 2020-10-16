@@ -56,3 +56,10 @@ echo $yuri->getQueryVar('q.0','defaultValueIfNotExists');
 ```
 1
 ```
+```PHP
+//@see Yuri::getPathByIndex(int $pathIndex = 0)
+echo $yuri->getPathByIndex();
+```
+```
+path
+```
