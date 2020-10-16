@@ -14,3 +14,9 @@ use Kristos80\Yuri\Yuri;
 require_once __DIR__ . '/vendor/autoload.php';
 
 $yuri = new Yuri('https://www.dummy.com/path/index.html?q[]=1&q[]=2');
+```
+You can check, almost, all methods returned values, by using one of the `asArray()`, `asClass()` or `asJsonString()` methods:
+
+```PHP
+echo($yuri->asJsonString(TRUE));
+```
