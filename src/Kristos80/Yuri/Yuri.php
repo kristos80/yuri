@@ -143,9 +143,19 @@ class Yuri {
 	 * @return string
 	 */
 	public function getNormalizedUri(bool $useTrailingSlash = FALSE): string {
-		$isFile = pathinfo($this->getPath(), PATHINFO_EXTENSION);
+		return ($this->normalizedUri . ($useTrailingSlash ? (! $this->isFile() ? '/' : '') : '')) . $this->getQueryString(TRUE);
+	}
 
-		return ($this->normalizedUri . ($useTrailingSlash ? (! $isFile ? '/' : '') : '')) . $this->getQueryString(TRUE);
+	/**
+	 * Checks if the Uri points to a file
+	 *
+	 * @return bool
+	 */
+	public function isFile(): bool {
+		$isFile = (bool) pathinfo($this->getPath(), PATHINFO_EXTENSION);
+		$originalUriHasSlash = substr($this->originalUri, - 1) === '/';
+
+		return $isFile && ! $originalUriHasSlash;
 	}
 
 	/**
@@ -310,6 +320,7 @@ class Yuri {
 			'port' => $this->getPort(),
 			'uid' => $this->getUid(),
 			'isHttps' => $this->isHttps(),
+			'isFile' => $this->isFile(),
 		);
 	}
 
