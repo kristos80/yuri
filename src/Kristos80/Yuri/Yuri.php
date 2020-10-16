@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Kristos80\Yuri;
 
 use Kristos80\Opton\Opton;
@@ -7,6 +8,7 @@ use function Sabre\Uri\normalize;
 use function Sabre\Uri\parse;
 
 class Yuri {
+
 	/**
 	 *
 	 * @var string
@@ -281,10 +283,11 @@ class Yuri {
 	 * @see \Kristos80\Opton\Opton::get()
 	 *
 	 * @param string $varNotation
+	 * @param mixed $defaultValue
 	 * @return mixed|NULL
 	 */
-	public function getQueryVar(string $varNotation) {
-		return Opton::get($varNotation, $this->getQuery());
+	public function getQueryVar(string $varNotation, $defaultValue = NULL) {
+		return Opton::get($varNotation, $this->getQuery(), $defaultValue);
 	}
 
 	/**
