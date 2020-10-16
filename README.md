@@ -5,3 +5,8 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=kristos80_yuri&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=kristos80_yuri)
 --
 `Yuri` is a small utility for making sense out of URIs, without having to write the same utility methods again and again.
+
+By default `Yuri` works for the current URL if an input URI is ommited:
+```PHP
+$yuri = new Yuri();
+```
