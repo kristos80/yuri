@@ -63,3 +63,26 @@ echo $yuri->getPathByIndex();
 ```
 path
 ```
+Methods
+--
+```PHP
+public function getOriginalUri(): string {}
+public function getNormalizedUri(bool $useTrailingSlash = FALSE): string {}
+public function isFile(): bool {}
+public function getNormalizedUriWithSlash(): string {}
+public function getScheme(): ?string {}
+public function getHost(): ?string {}
+public function getPaths(bool $useNullOnEmptyPaths = FALSE): ?array {}
+public function getPath(bool $useSlashOnEmptyPath = FALSE): string {}
+public function getQuery(): array {}
+public function getOriginalQueryString(bool $useQuestionMark = FALSE): string {}
+public function getQueryString(bool $useQuestionMark = FALSE): string {}
+public function getPort(): ?int {}
+public function getUid(): string {}
+public function isHttps(): bool {}
+public function getPathByIndex(int $pathIndex = 0): ?string {}
+public function getQueryVar(string $varNotation, $defaultValue = NULL) {}
+public function asArray(): array {}
+public function asClass(): \stdClass {}
+public function asJsonString(bool $prettyPrint = FALSE): string {}
+```
