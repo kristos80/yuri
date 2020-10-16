@@ -20,3 +20,29 @@ You can check, almost, all methods returned values, by using one of the `asArray
 ```PHP
 echo($yuri->asJsonString(TRUE)); //@see Yuri::asJsonString(bool $prettyPrint = FALSE)
 ```
+```JSON
+{
+    "originalUri": "https:\/\/www.dummy.com\/path\/index.html?q[]=1&q[]=2",
+    "normalizedUri": "https:\/\/www.dummy.com\/path\/index.html?q[0]=1&q[1]=2",
+    "normalizedUriWithSlash": "https:\/\/www.dummy.com\/path\/index.html?q[0]=1&q[1]=2",
+    "scheme": "https",
+    "host": "www.dummy.com",
+    "path": "\/path\/index.html",
+    "paths": [
+        "path",
+        "index.html"
+    ],
+    "query": {
+        "q": [
+            "1",
+            "2"
+        ]
+    },
+    "originalQueryString": "q[]=1&q[]=2",
+    "queryString": "q[0]=1&q[1]=2",
+    "port": null,
+    "uid": "6ec78702bb2686046b5102547fbd3d79",
+    "isHttps": true,
+    "isFile": true
+}
+```
