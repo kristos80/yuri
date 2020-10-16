@@ -8,5 +8,9 @@
 
 By default `Yuri` works for the current URL if an input URI is ommited:
 ```PHP
-$yuri = new Yuri();
-```
+<?php
+use Kristos80\Yuri\Yuri;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$yuri = new Yuri('https://www.dummy.com/path/index.html?q[]=1&q[]=2');
