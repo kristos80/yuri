@@ -46,3 +46,10 @@ echo($yuri->asJsonString(TRUE)); //@see Yuri::asJsonString(bool $prettyPrint = F
     "isFile": true
 }
 ```
+And there are some extra utility methods for getting data about `path` and `query`, like:
+```PHP
+echo $yuri->getQueryVar('q.0','defaultValueIfNotExists'); //@see Yuri::getQueryVar(string $varNotation, $defaultValue = NULL)
+```
+```
+1
+```
