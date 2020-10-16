@@ -20,7 +20,6 @@ You can check, almost, all methods returned values, by using one of the `asArray
 ```PHP
 echo($yuri->asJsonString(TRUE)); 
 //@see Yuri::asJsonString(bool $prettyPrint = FALSE)
-//Notation syntax is, also, supported
 ```
 ```JSON
 {
@@ -50,7 +49,9 @@ echo($yuri->asJsonString(TRUE));
 ```
 And there are some extra utility methods for getting data about `path` and `query`, like:
 ```PHP
-echo $yuri->getQueryVar('q.0','defaultValueIfNotExists'); //@see Yuri::getQueryVar(string $varNotation, $defaultValue = NULL)
+echo $yuri->getQueryVar('q.0','defaultValueIfNotExists'); 
+//@see Yuri::getQueryVar(string $varNotation, $defaultValue = NULL)
+//Notation syntax is, also, supported
 ```
 ```
 1
