@@ -28,6 +28,8 @@ echo($yuri->asJsonString(TRUE));
     "normalizedUriWithSlash": "https:\/\/www.dummy.com\/path\/index.html?q[0]=1&q[1]=2",
     "scheme": "https",
     "host": "www.dummy.com",
+    "hostWithoutSubdomains": "dummy.com",
+    "tld": "com",
     "path": "\/path\/index.html",
     "paths": [
         "path",
@@ -44,7 +46,8 @@ echo($yuri->asJsonString(TRUE));
     "port": null,
     "uid": "6ec78702bb2686046b5102547fbd3d79",
     "isHttps": true,
-    "isFile": true
+    "isFile": true,
+    "isWww": true
 }
 ```
 And there are some extra utility methods for getting data about `path` and `query`, like:
@@ -69,9 +72,11 @@ Methods
 getOriginalUri(): string {}
 getNormalizedUri(bool $useTrailingSlash = FALSE): string {}
 isFile(): bool {}
+isWww(): bool {}
 getNormalizedUriWithSlash(): string {}
 getScheme(): ?string {}
-getHost(): ?string {}
+getHost(bool $removeSubDomains = FALSE): ?string {}
+getTld(): string {}
 getPaths(bool $useNullOnEmptyPaths = FALSE): ?array {}
 getPath(bool $useSlashOnEmptyPath = FALSE): string {}
 getQuery(): array {}
