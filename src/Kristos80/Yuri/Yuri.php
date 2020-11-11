@@ -7,6 +7,11 @@ use Kristos80\Opton\Opton;
 use function Sabre\Uri\normalize;
 use function Sabre\Uri\parse;
 
+/**
+ * 
+ * @author Chris Athanasiadis <chris.k.athanasiadis@gmail.com>
+ *
+ */
 class Yuri {
 
 	/**
@@ -159,6 +164,15 @@ class Yuri {
 	}
 
 	/**
+	 * Checks if subdomain is 'www'
+	 *
+	 * @return bool
+	 */
+	public function isWww(): bool {
+		return Opton::get('0', ($subdomains = explode('.', $this->getHost()))) === 'www' && count($subdomains) === 3;
+	}
+
+	/**
 	 * Alias of getNormalizedUri(TRUE)
 	 *
 	 * @see Yuri::getNormalizedUri()
@@ -181,10 +195,35 @@ class Yuri {
 	/**
 	 * Returns the host of the Uri if applicable
 	 *
+	 * @param bool $removeSubDomains
 	 * @return string|NULL
 	 */
-	public function getHost(): ?string {
-		return $this->host;
+	public function getHost(bool $removeSubDomains = FALSE): ?string {
+		$host = $this->host;
+
+		$hostWithoutSubDomain = NULL;
+		$subDomains = explode('.', $this->host);
+
+		count($subDomains) >= 2 && $removeSubDomains ? $hostWithoutSubDomain = implode('.', array(
+			Opton::get(count($subDomains) - 2, $subDomains),
+			Opton::get(count($subDomains) - 1, $subDomains),
+		)) : NULL;
+
+		return $removeSubDomains ? $hostWithoutSubDomain : $host;
+	}
+
+	/**
+	 * Get 'TLD'
+	 *
+	 * @return string
+	 */
+	public function getTld(): string {
+		$tld = NULL;
+		$subDomains = explode('.', $this->host);
+
+		count($subDomains) >= 2 ? $tld = Opton::get(count($subDomains) - 1, $subDomains) : NULL;
+
+		return $tld;
 	}
 
 	/**
@@ -312,6 +351,8 @@ class Yuri {
 			'normalizedUriWithSlash' => $this->getNormalizedUriWithSlash(),
 			'scheme' => $this->getScheme(),
 			'host' => $this->getHost(),
+			'hostWithoutSubdomains' => $this->getHost(TRUE),
+			'tld' => $this->getTld(),
 			'path' => $this->getPath(),
 			'paths' => $this->getPaths(),
 			'query' => $this->getQuery(),
@@ -321,6 +362,7 @@ class Yuri {
 			'uid' => $this->getUid(),
 			'isHttps' => $this->isHttps(),
 			'isFile' => $this->isFile(),
+			'isWww' => $this->isWww(),
 		);
 	}
 
