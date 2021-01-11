@@ -217,7 +217,7 @@ class Yuri {
 	 *
 	 * @return string
 	 */
-	public function getTld(): string {
+	public function getTld(): ?string {
 		$tld = NULL;
 		$subDomains = explode('.', $this->host);
 
