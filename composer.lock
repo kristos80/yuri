@@ -40,6 +40,10 @@
                 }
             ],
             "description": "Easily get a value from an array or object without all of those unnecessary array_key_exists or isset controls",
+            "support": {
+                "issues": "https://github.com/kristos80/Opton/issues",
+                "source": "https://github.com/kristos80/Opton/tree/master"
+            },
             "time": "2020-03-16T14:49:09+00:00"
         },
         {
@@ -92,6 +96,11 @@
                 "uri",
                 "url"
             ],
+            "support": {
+                "forum": "https://groups.google.com/group/sabredav-discuss",
+                "issues": "https://github.com/sabre-io/uri/issues",
+                "source": "https://github.com/fruux/sabre-uri"
+            },
             "time": "2020-10-03T10:33:23+00:00"
         }
     ],
@@ -103,5 +112,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

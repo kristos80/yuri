@@ -1,21 +1,35 @@
 {
-	"name" : "kristos80/yuri",
-	"type" : "library",
-	"license" : "MIT",
-	"authors" : [{
-			"name" : "Christos Athanasiadis",
-			"email" : "christos.k.athanasiadis@gmail.com"
+	"name": "kristos80/yuri",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Christos Athanasiadis",
+			"email": "christos.k.athanasiadis@gmail.com"
 		}
 	],
-	"minimum-stability" : "stable",
-	"autoload" : {
-		"psr-4" : {
-			"Kristos80\\Yuri\\" : "src/Kristos80/Yuri"
+	"minimum-stability": "stable",
+	"autoload": {
+		"psr-4": {
+			"Kristos80\\Yuri\\": "src/Kristos80/Yuri"
 		}
 	},
-	"description" : "Uris on steroids",
+	"description": "Uris on steroids",
 	"require": {
 		"sabre/uri": "^2.2",
 		"kristos80/opton": "^1.1"
+	},
+	"config": {
+		"process-timeout": 0,
+		"sort-packages": true
+	},
+	"scripts": {
+		"start": "php -S localhost:8099 index.php",
+		"code-analysis": [
+			"@phpinsights",
+			"@churn"
+		],
+		"churn": "churn run src/",
+		"phpinsights": "phpinsights analyse src/"
 	}
 }

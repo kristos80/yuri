@@ -8,71 +8,59 @@ use function Sabre\Uri\normalize;
 use function Sabre\Uri\parse;
 
 /**
- * 
  * @author Chris Athanasiadis <chris.k.athanasiadis@gmail.com>
- *
  */
-class Yuri {
+final class Yuri {
 
 	/**
-	 *
 	 * @var string
 	 */
-	protected $originalUri = '';
+	protected string $originalUri = '';
 
 	/**
-	 *
 	 * @var string
 	 */
-	protected $normalizedUri = '';
+	protected string $normalizedUri = '';
 
 	/**
-	 *
 	 * @var array
 	 */
-	protected $parsedUri = array();
+	protected array $parsedUri = [];
 
 	/**
-	 *
 	 * @var string
 	 */
-	protected $scheme = '';
+	protected string $scheme = '';
 
 	/**
-	 *
 	 * @var string
 	 */
-	protected $host = '';
+	protected string $host = '';
 
 	/**
-	 *
 	 * @var array
 	 */
-	protected $paths = array();
+	protected array $paths = [];
 
 	/**
-	 *
 	 * @var array
 	 */
-	protected $query = array();
+	protected array $query = [];
 
 	/**
-	 *
 	 * @var array
 	 */
-	protected $querySorted = array();
+	protected array $querySorted = [];
 
 	/**
-	 *
 	 * @var integer
 	 */
-	protected $port = 80;
+	protected int $port = 80;
 
 	/**
-	 *
 	 * @var string
 	 */
-	protected $uid = '';
+	protected string $uid = '';
 
 	public function __construct(?string $uri = NULL) {
 		$this->init($uri);
@@ -81,21 +69,21 @@ class Yuri {
 	protected function init(?string $originalUri = NULL) {
 		// ======== Original Uri section ========
 		/**
-		 *
 		 * @var string $originalUri
 		 */
-		$originalUri = $originalUri ?: 'http' . ((Opton::get('HTTPS', $_SERVER) !== 'on') ?: 's') . '://' . Opton::get('HTTP_HOST', $_SERVER) . Opton::get('REQUEST_URI', $_SERVER);
+		$originalUri = $originalUri ?: 'http' . ((Opton::get('HTTPS', $_SERVER) !== 'on') ?: 's') . '://' .
+			Opton::get('HTTP_HOST', $_SERVER) . Opton::get('REQUEST_URI', $_SERVER);
 
 		$this->originalUri = $originalUri;
 
 		// ======== Parsed Uri section ========
 		/**
-		 *
 		 * @var string $parsedUri
 		 */
 		$parsedUri = parse(normalize($this->originalUri));
 
 		$this->scheme = Opton::get('scheme', $parsedUri);
+		$this->scheme = $this->scheme === 'http1' ? 'http' : $this->scheme;
 		$this->host = Opton::get('host', $parsedUri);
 		$this->port = Opton::get('port', $parsedUri, $this->port);
 
@@ -103,19 +91,17 @@ class Yuri {
 
 		// ======== Paths section ========
 		/**
-		 *
 		 * @var array $paths
 		 */
 		$paths = explode('/', trim(Opton::get('path', $this->parsedUri) ?: '', '/'));
 
-		$this->paths = ! empty($paths) && Opton::get(0, $paths) ? $paths : array();
+		$this->paths = count($paths) && Opton::get(0, $paths) ? $paths : [];
 
 		// ======== Query section ========
 		parse_str(Opton::get(1, explode('?', $this->getOriginalUri())) ?: '', $this->query);
 
 		// ======== Normalized Uri section ========
 		/**
-		 *
 		 * @var string $normalizedUri
 		 */
 		$normalizedUri = ($scheme = $this->getScheme()) ? $scheme . '://' : '';
@@ -125,9 +111,11 @@ class Yuri {
 
 		$this->normalizedUri = $normalizedUri;
 
-		// ======== Uid section ========
+		// ======== Query section ========
 		$this->querySorted = $this->query;
-		array_multisort($this->querySorted);
+		ksort($this->querySorted);
+
+		// ======== Uid section ========
 		$this->uid = md5($this->normalizedUri . serialize($this->querySorted));
 	}
 
@@ -148,7 +136,8 @@ class Yuri {
 	 * @return string
 	 */
 	public function getNormalizedUri(bool $useTrailingSlash = FALSE): string {
-		return ($this->normalizedUri . ($useTrailingSlash ? (! $this->isFile() ? '/' : '') : '')) . $this->getQueryString(TRUE);
+		return ($this->normalizedUri . ($useTrailingSlash ? (! $this->isFile() ? '/' : '') : '')) .
+			$this->getQueryString(TRUE);
 	}
 
 	/**
@@ -204,10 +193,11 @@ class Yuri {
 		$hostWithoutSubDomain = NULL;
 		$subDomains = explode('.', $this->host);
 
-		count($subDomains) >= 2 && $removeSubDomains ? $hostWithoutSubDomain = implode('.', array(
-			Opton::get(count($subDomains) - 2, $subDomains),
-			Opton::get(count($subDomains) - 1, $subDomains),
-		)) : NULL;
+		count($subDomains) >= 2 && $removeSubDomains ? $hostWithoutSubDomain = implode('.',
+			[
+				Opton::get(count($subDomains) - 2, $subDomains),
+				Opton::get(count($subDomains) - 1, $subDomains),
+			]) : NULL;
 
 		return $removeSubDomains ? $hostWithoutSubDomain : $host;
 	}
@@ -218,12 +208,9 @@ class Yuri {
 	 * @return string
 	 */
 	public function getTld(): ?string {
-		$tld = NULL;
 		$subDomains = explode('.', $this->host);
 
-		count($subDomains) >= 2 ? $tld = Opton::get(count($subDomains) - 1, $subDomains) : NULL;
-
-		return $tld;
+		return count($subDomains) >= 2 ? Opton::get(count($subDomains) - 1, $subDomains) : NULL;
 	}
 
 	/**
@@ -235,7 +222,7 @@ class Yuri {
 	 * @return array|NULL
 	 */
 	public function getPaths(bool $useNullOnEmptyPaths = FALSE): ?array {
-		return ! empty($this->paths) ? $this->paths : ($useNullOnEmptyPaths ? NULL : array());
+		return count($this->paths) ? $this->paths : ($useNullOnEmptyPaths ? NULL : []);
 	}
 
 	/**
@@ -283,6 +270,16 @@ class Yuri {
 	 */
 	public function getQueryString(bool $useQuestionMark = FALSE): string {
 		$queryString = urldecode(http_build_query($this->getQuery()));
+
+		return $queryString ? ($useQuestionMark ? '?' : '') . $queryString : '';
+	}
+
+	public function getQuerySorted(): array {
+		return $this->querySorted;
+	}
+
+	public function getQueryStringSorted(bool $useQuestionMark = FALSE): string {
+		$queryString = urldecode(http_build_query($this->getQuerySorted()));
 
 		return $queryString ? ($useQuestionMark ? '?' : '') . $queryString : '';
 	}
@@ -339,6 +336,12 @@ class Yuri {
 		return Opton::get($varNotation, $this->getQuery(), $defaultValue);
 	}
 
+	public function getUriWithoutQueryString(bool $useTrailingSlash = FALSE): string {
+		$uriParts = explode('?', $this->getNormalizedUri($useTrailingSlash));
+
+		return Opton::get(0, $uriParts);
+	}
+
 	/**
 	 * Returns all methods values as array
 	 *
@@ -349,6 +352,7 @@ class Yuri {
 			'originalUri' => $this->getOriginalUri(),
 			'normalizedUri' => $this->getNormalizedUri(),
 			'normalizedUriWithSlash' => $this->getNormalizedUriWithSlash(),
+			'uriWithouQueryString' => $this->getUriWithoutQueryString(TRUE),
 			'scheme' => $this->getScheme(),
 			'host' => $this->getHost(),
 			'hostWithoutSubdomains' => $this->getHost(TRUE),
@@ -358,6 +362,8 @@ class Yuri {
 			'query' => $this->getQuery(),
 			'originalQueryString' => $this->getOriginalQueryString(),
 			'queryString' => $this->getQueryString(),
+			'querySorted' => $this->getQuerySorted(),
+			'queryStringSorted' => $this->getQueryStringSorted(),
 			'port' => $this->getPort(),
 			'uid' => $this->getUid(),
 			'isHttps' => $this->isHttps(),
