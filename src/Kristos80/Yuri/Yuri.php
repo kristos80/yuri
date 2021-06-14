@@ -84,7 +84,7 @@ final class Yuri {
 
 		$this->scheme = Opton::get('scheme', $parsedUri);
 		$this->scheme = $this->scheme === 'http1' ? 'http' : $this->scheme;
-		$this->host = Opton::get('host', $parsedUri);
+		$this->host = Opton::get('host', $parsedUri) ?? 'localhost';
 		$this->port = Opton::get('port', $parsedUri) ?? $this->port;
 		
 		$this->parsedUri = $parsedUri;
